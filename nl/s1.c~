@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <string.h>
+
+int main()
+{
+   int sockfd, newsockfd, portno, clilen;
+   char buffer[1024];
+   struct sockaddr_in serv_addr, cli_addr;
+   int  n;
+   sockfd = socket(AF_INET, SOCK_STREAM, 0);
+   if (sockfd < 0)
+   {
+      printf("socket error");
+      return 1;
+   }
+   bzero((char *) &serv_addr, sizeof(serv_addr));
+   portno = 12345;
+   serv_addr.sin_family = AF_INET;
+   serv_addr.sin_addr.s_addr = INADDR_ANY;
+   serv_addr.sin_port = htons(portno);
+   if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+   {
+      printf("binding binding");
+      return 1;
+   }
+   listen(sockfd,5);
+   clilen = sizeof(cli_addr);
+   newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);	
+   if (newsockfd < 0)
+   {
+      printf("acceptance error");
+      return 1;
+   }
+   bzero(buffer,1024);
+   n = read( newsockfd,buffer,sizeof(buffer) );
+   if (n < 0)
+   {
+      printf("ERROR reading from socket");
+      return 1;
+   }
+   printf("client : %s\n",buffer);
+   char *msg = strdup("Access Denied, GoodBye");
+   n = write(newsockfd,msg,strlen(msg));
+   if (n < 0)
+   {
+      printf("write error");
+      return 1;
+   }     
+   return 0;
+}
