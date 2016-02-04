@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Client server multi-client chat application using a python GUI.
+#Multi-client chat application keeping chat records.
 #client part
 
 import sys
