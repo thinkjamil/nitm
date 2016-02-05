@@ -20,7 +20,9 @@ class chatapp:
 		self.chat_text=Text(self.top)
 		self.chat_text.grid(row=1,column=1,columnspan=3,rowspan=10)
 		self.send_text=Entry(self.top)
-		self.send_text.grid(row=0,column=0,columnspan=3)
+		self.name_text=Entry(self.top)
+		self.send_text.grid(row=0,column=0,columnspan=2)
+		self.name_text.grid(row=0,column=2,columnspan=1)
 		self.send_button = Button(self.top, text ="send", command = lambda:self.send_it())
 		self.send_button.grid(row=0,column=3)
 		
@@ -47,8 +49,8 @@ class chatapp:
 		
 	def send_it(self):
 		
-		self.stxt=self.send_text.get()
-		self.chat_text.insert(END,"[ME]"+self.stxt+"\n")
+		self.stxt="["+self.name_text.get()+"]"+self.send_text.get()+"\n"
+		#self.chat_text.insert(END,self.stxt)
    		mysocket.send(self.stxt)
 
 
